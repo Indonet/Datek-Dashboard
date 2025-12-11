@@ -35,10 +35,10 @@ const routes = [
         name: 'dashboard',
         component: Dashboard,
         meta: {
-          requiresAuth: true,
+          // requiresAuth: true,
           breadCrumb: [{
             to: '',
-            text: 'Dashboard'
+            text: 'Dashboard - Monitoring'
           }],
         }
       },
@@ -110,7 +110,7 @@ const routes = [
         name: 'suggestion',
         component: Suggestion,
         meta: {
-          requiresAuth: true,
+          // requiresAuth: true,
           breadCrumb: [{
             to: '/dashboard',
             text: 'Dashboard'

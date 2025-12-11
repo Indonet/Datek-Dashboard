@@ -1,53 +1,51 @@
 <template>
-  <v-container>
-    <v-card>
-      <v-card-text>
-        <v-row>
-          <v-col cols="12">
-            <v-card class="text-white bg-animate" flat>
-              <v-card-title class="d-flex text-white align-center py-3">
-                <h2 v-show="!$vuetify.display.mobile">Suggestion</h2>
-                <h4 v-show="$vuetify.display.mobile">Suggestion</h4>
-              </v-card-title>
-            </v-card>
-          </v-col>
-        </v-row>
-        <v-row>
-          <v-col cols="12">
-            <v-textarea
-              v-model="content"
-              variant="outlined"
-              :rows="15"
-            >
-              <template #label>Note</template>
-            </v-textarea>
-          </v-col>
-          <v-col cols="12" class="mt-n4">
-            <SelectMultiFiles @files-updated="handleFilesUpdated" />
-          </v-col>
-        </v-row>
-        <!-- <div>
-          <p>{{ content }}</p>
-          <p>Files Uploaded {{ selectedFiles }}</p>
-        </div> -->
-        <v-divider class="my-3"></v-divider>
-        <v-card-actions>
-          <v-spacer></v-spacer>
-          <v-btn color="medium-emphasis" @click="this.$router.back()"
-            >Cancel</v-btn
+  <v-card>
+    <v-card-text>
+      <v-row>
+        <v-col cols="12">
+          <v-card class="text-white bg-animate" flat>
+            <v-card-title class="d-flex text-white align-center py-3">
+              <h2 v-show="!$vuetify.display.mobile">Suggestion</h2>
+              <h4 v-show="$vuetify.display.mobile">Suggestion</h4>
+            </v-card-title>
+          </v-card>
+        </v-col>
+      </v-row>
+      <v-row>
+        <v-col cols="12">
+          <v-textarea
+            v-model="content"
+            variant="outlined"
+            :rows="15"
           >
-          <v-btn
-            prepend-icon="mdi-send"
-            class="px-6"
-            variant="flat"
-            color="orange-darken-4"
-            @click="showModal = true"
-            >Submit</v-btn
-          >
-        </v-card-actions>
-      </v-card-text>
-    </v-card>
-  </v-container>
+            <template #label>Note</template>
+          </v-textarea>
+        </v-col>
+        <v-col cols="12" class="mt-n4">
+          <SelectMultiFiles @files-updated="handleFilesUpdated" />
+        </v-col>
+      </v-row>
+      <!-- <div>
+        <p>{{ content }}</p>
+        <p>Files Uploaded {{ selectedFiles }}</p>
+      </div> -->
+      <v-divider class="my-3"></v-divider>
+      <v-card-actions>
+        <v-spacer></v-spacer>
+        <v-btn color="medium-emphasis" @click="this.$router.back()"
+          >Cancel</v-btn
+        >
+        <v-btn
+          prepend-icon="mdi-send"
+          class="px-6"
+          variant="flat"
+          color="orange-darken-4"
+          @click="showModal = true"
+          >Submit</v-btn
+        >
+      </v-card-actions>
+    </v-card-text>
+  </v-card>
 
   <!-- Snackbar Alert -->
   <v-snackbar

@@ -1,7 +1,7 @@
 <template>
     <v-app id="inspire">
         <!-- <AppHeader></AppHeader> -->
-        <v-main class="bg-brown-lighten-5">
+        <v-main class="bg-grey-darken-4">
             <router-view v-slot="{ Component }">
                 <keep-alive>
                     <component :is="Component" />

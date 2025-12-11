@@ -1,182 +1,307 @@
 <template>
-  <v-app-bar class="px-3" rounded>
-    <!-- Logo -->
-    <v-img src="@/assets/indonet-logo-new.png" alt="Logo" max-width="60" class="ml-4" />
-    <!-- Tabs Menu-->
-    <v-tabs v-model="activeTab" class="ml-10" color="grey-darken-2" centered>
-      <v-tab v-show="!$vuetify.display.smAndDown" v-for="link in links" :key="link.text" :value="link.path"
-        :to="link.path">
-        {{ link.text }}
-      </v-tab>
-    </v-tabs>
-    <!-- <v-btn
-      v-show="!$vuetify.display.smAndDown"
-      variant="text"
-      href="https://myflow.indonet.id"
-      target="_blank"
-      rel="noopener"
-    >
-      <span class="text-orange-darken-4">Dashboard Myflow1</span>
-    </v-btn> -->
-    <v-spacer></v-spacer>
-    <!-- v-show="!$vuetify.display.mobile" -->
-    <!-- Action Button -->
+  <v-layout class="rounded rounded-md border" height="100vh">
+    <!-- APP BAR -->
+    <v-app-bar class="px-3 bg-black" rounded>
 
-    <ChatNotification></ChatNotification>
+      <v-btn
+        v-if="!drawer"
+        icon
+        density="comfortable"
+        class="floating-menu-open elevation-2"
+        @click="toggleDrawer"
+      >
+        <v-icon>
+          mdi-view-list
+        </v-icon>
+      </v-btn>
+      
+      <!-- Drawer Toggle Button -->
+      <!-- <v-btn icon @click="toggleDrawer">
+        <v-icon>
+          {{ drawer ? 'mdi-chevron-double-left' : 'mdi-menu' }}
+        </v-icon>
+      </v-btn> -->
 
-    <v-menu v-model="menu" :close-on-content-click="false" location="bottom">
-      <template v-slot:activator="{ props }">
-        <v-btn size="large" variant="text" v-bind="props" class="mx-0">
-          <span v-show="!$vuetify.display.smAndDown" class="mr-2">{{
-            authStore.user?.username
-          }}</span>
-          <v-icon icon="mdi-menu"></v-icon>
-        </v-btn>
-      </template>
+      <!-- Logo -->
+      <v-img
+        src="@/assets/indonet-logo-new.png"
+        alt="Logo"
+        max-width="60"
+        class="ml-4 mr-8 mb-2"
+      />
 
-      <v-card min-width="350">
-        <!-- :prepend-avatar="authStore.user?.image || 'https://cdn.vuetifyjs.com/images/john.jpg'" -->
-        <v-list-item :subtitle="authStore.user?.email || 'No email'" :title="authStore.user?.username || 'Guest'">
-          <template #prepend>
-            <v-avatar color="grey-darken-1" size="36">
-              <v-icon>mdi-account-circle</v-icon>
-            </v-avatar>
+      <!-- Tabs Menu -->
+      <v-breadcrumbs :items="breadcrumbs" class="text-caption">
+        <template v-slot:item="{ item }">
+          <v-breadcrumbs-item :href="item.href">
+            {{ item.text }}
+          </v-breadcrumbs-item>
+        </template>
+
+        <template v-slot:divider>
+          <v-icon small>mdi-chevron-right</v-icon>
+        </template>
+      </v-breadcrumbs>
+      
+
+      <v-spacer />
+
+      <v-btn variant="text" size="small" @click="showChangelog" class="mr-2">
+        What's New
+      </v-btn>
+      <v-btn variant="text" size="small" @click="showUserGuide" class="mr-2">
+        User Guide
+      </v-btn>
+      
+      <!-- Notification -->
+      <ChatNotification></ChatNotification>
+
+      <!-- Menu (user) -->
+      <v-menu v-model="menu" :close-on-content-click="false" location="bottom">
+        <template v-slot:activator="{ props }">
+          <v-btn icon v-bind="props" class="mx-0">
+            <span v-show="!$vuetify.display.smAndDown">
+              {{ authStore.user?.username }}
+            </span>
+            <v-icon>mdi-dots-vertical</v-icon>
+          </v-btn>
+        </template>
+
+        <v-card min-width="350">
+          <v-list-item
+            :subtitle="authStore.user?.email || 'No email'"
+            :title="authStore.user?.username || 'Guest'"
+          >
+            <template #prepend>
+              <v-avatar color="grey-darken-1" size="36">
+                <v-icon>mdi-account-circle</v-icon>
+              </v-avatar>
+            </template>
+          </v-list-item>
+
+          <v-divider />
+
+          <v-list-item
+            v-show="$vuetify.display.smAndDown"
+            to="/dashboard"
+            link
+            title="Dashboard"
+            @click="menu = false"
+          />
+
+          <v-divider v-show="$vuetify.display.smAndDown" />
+
+          <v-list-item
+            v-show="$vuetify.display.smAndDown"
+            to="/create"
+            link
+            title="Create MyFlow"
+            @click="menu = false"
+          />
+
+          <v-divider v-show="$vuetify.display.smAndDown" />
+
+          <v-list-item
+            to="/profile"
+            link
+            title="Profile"
+            @click="menu = false"
+          />
+
+          <v-divider />
+
+          <v-btn @click="logout" color="orange-darken-4" size="small" class="ma-2">
+            Logout
+          </v-btn>
+        </v-card>
+      </v-menu>
+
+    </v-app-bar>
+
+    <!-- NAVIGATION DRAWER -->
+    <v-navigation-drawer v-model="drawer" class="bg-grey-darken-4 elevation-4">
+      <v-btn
+        v-if="drawer"
+        icon
+        density="comfortable"
+        class="floating-menu-close"
+        @click="toggleDrawer"
+      >
+        <v-icon>
+          mdi-chevron-double-left
+        </v-icon>
+      </v-btn>
+
+      <v-list nav class="mt-8">
+
+        <!-- Dashboard (no child) -->
+        <v-list-item
+          title="Dashboard"
+          link
+          to="/dashboard"
+        ></v-list-item>
+
+        <!-- Inventory (with child) -->
+        <v-list-group value="inventory">
+          <template #activator="{ props }">
+            <v-list-item v-bind="props" title="Inventory"></v-list-item>
           </template>
-        </v-list-item>
-        <v-divider></v-divider>
-        <v-list-item v-show="$vuetify.display.smAndDown" to="/dashboard" link title="Dashboard" @click="menu = false" />
-        <v-divider v-show="$vuetify.display.smAndDown"></v-divider>
-        <v-list-item v-show="$vuetify.display.smAndDown" to="/create" link title="Create MyFlow"
-          @click="menu = false" />
-        <v-divider v-show="$vuetify.display.smAndDown"></v-divider>
-        <v-list-item to="/profile" link title="Profile" @click="menu = false" />
 
-        <v-divider v-show="$vuetify.display.smAndDown"></v-divider>
-        <v-list-item v-show="$vuetify.display.smAndDown" @click="menu = false; showChangelog()" link
-          title="What's New" />
+          <v-list-item title="Customer" to="/inventory/customer"></v-list-item>
+          <v-list-item title="Devices" to="/inventory/devices"></v-list-item>
+          <v-list-item title="Datacenter" to="/inventory/datacenter"></v-list-item>
+          <v-list-item title="Rack" to="/inventory/rack"></v-list-item>
+          <v-list-item title="Services" to="/inventory/services"></v-list-item>
+          <v-list-item title="Vlan" to="/inventory/vlan"></v-list-item>
+          <v-list-item title="Cross Connect" to="/inventory/cross-connect"></v-list-item>
+          <v-list-item title="FO" to="/inventory/fo"></v-list-item>
+        </v-list-group>
 
-        <v-divider v-show="$vuetify.display.smAndDown"></v-divider>
-        <v-list-item v-show="$vuetify.display.smAndDown" @click="menu = false; showUserGuide()" link
-          title="User Guide" />
+        <!-- Documentation (no child) -->
+        <v-list-item
+          title="Documentation"
+          link
+          to="/documentation"
+        ></v-list-item>
 
-        <v-divider></v-divider>
-        <v-btn @click="logout" color="orange-darken-4" size="small" class="ma-2">Logout</v-btn>
-      </v-card>
-    </v-menu>
+        <!-- Config (with child) -->
+        <v-list-group value="config">
+          <template #activator="{ props }">
+            <v-list-item v-bind="props" title="Configuration"></v-list-item>
+          </template>
 
-    <template v-slot:extension>
-      <v-row class="mx-0 align-center">
-        <!-- Kolom kiri: Breadcrumbs -->
-        <v-col cols="8" class="pl-0">
-          <v-breadcrumbs :items="breadcrumbs" class="text-caption">
-            <template v-slot:item="{ item }">
-              <v-breadcrumbs-item :href="item.href">
-                {{ item.text }}
-              </v-breadcrumbs-item>
-            </template>
-            <template v-slot:divider>
-              <v-icon small>mdi-chevron-right</v-icon>
-            </template>
-          </v-breadcrumbs>
-        </v-col>
+          <v-list-item title="Generate Config" to="/create"></v-list-item>
+          <v-list-item title="Backup Config (Gitea)" to="/config/backup"></v-list-item>
+        </v-list-group>
 
-        <!-- Kolom tengah: Kosong -->
-        <!-- <v-col cols="1"></v-col> -->
+        <!-- KPI/Task (no child) -->
+        <v-list-item
+          title="Task"
+          link
+          to="/suggestion"
+        ></v-list-item>
 
-        <!-- Kolom kanan: Tombol di pojok kanan -->
-        <v-col cols="4" v-if="!$vuetify.display.smAndDown" class="text-right pr-0">
-          <v-btn variant="text" size="small" @click="showChangelog" class="mr-2">
-            What's New
-          </v-btn>
-          <v-btn variant="text" size="small" @click="showUserGuide" class="mr-2">
-            User Guide
-          </v-btn>
-        </v-col>
-      </v-row>
-    </template>
-  </v-app-bar>
+      </v-list>
 
-  <router-view />
+    </v-navigation-drawer>
 
-  <!-- Modal placed outside the navbar to overlay the entire app -->
-  <ChangelogModal ref="changelogModal"></ChangelogModal>
+    <!-- MAIN -->
+    <v-main>
+      <div style="height: 100%; overflow-y: auto;">
+        <v-container class="py-6">
+          <router-view />
+        </v-container>
+      </div>
+    </v-main>
+
+    <!-- Modals -->
+    <ChangelogModal ref="changelogModal" />
+  </v-layout>
 </template>
 
 <script>
 import axios from "@/axios";
-import { useAuthStore } from "../stores/authStore"; // Sesuaikan path jika diperlukan
-import ChatNotification from "../components/ChatNotification.vue"; // Sesuaikan path jika diperlukan
-import ChangelogModal from "../components/ChangelogModal.vue"; // Sesuaikan path jika diperlukan
+import { useAuthStore } from "../stores/authStore";
+import ChatNotification from "../components/ChatNotification.vue";
+import ChangelogModal from "../components/ChangelogModal.vue";
 
 export default {
-  name: "MyFlowLayout",
-  data: () => ({
-    authStore: useAuthStore(),
-    activeTab: "",
-    breadcrumbs: [
-      {
-        text: "",
-        href: "",
-      },
-    ],
-    links: [
-      { text: "Dashboard", path: "/dashboard" },
-      { text: "Create MyFlow", path: "/create" },
-    ],
-    menu: false,
-    notifMenu: false,
-    hints: true,
-  }),
+  name: "LayoutWithDrawer",
+  data() {
+    return {
+      drawer: true,
+      menu: false,
+      authStore: useAuthStore(),
+
+      activeTab: "",
+      breadcrumbs: [],
+
+      links: [
+        { text: "Dashboard", path: "/dashboard" },
+        { text: "Create MyFlow", path: "/create" },
+      ],
+    };
+  },
+
   watch: {
     $route(to) {
       this.updateBreadcrumbs(to);
     },
   },
+
   mounted() {
     this.updateBreadcrumbs(this.$route);
   },
-  methods: {
-    updateBreadcrumbs(route) {
-      // Ambil data breadcrumb dari meta
-      const breadcrumbArray = route.meta.breadCrumb || [];
 
-      // Inisialisasi array untuk breadcrumbs
-      const breadcrumbs = breadcrumbArray.map((crumb) => ({
-        text: crumb.text.charAt(0).toUpperCase() + crumb.text.slice(1), // Kapitalisasi teks
-        href: crumb.to, // Gunakan properti `to` sebagai hyperlink
+  methods: {
+    toggleDrawer() {
+      this.drawer = !this.drawer;
+    },
+
+    updateBreadcrumbs(route) {
+      const crumb = route.meta.breadCrumb || [];
+
+      this.breadcrumbs = crumb.map((c) => ({
+        text: c.text.charAt(0).toUpperCase() + c.text.slice(1),
+        href: c.to,
       }));
 
-      // Update breadcrumbs ke state
-      this.breadcrumbs = breadcrumbs;
-
-      // Set activeTab berdasarkan breadcrumb pertama
-      if (breadcrumbArray.length > 0) {
-        this.activeTab = breadcrumbArray[0].to;
+      if (crumb.length > 0) {
+        this.activeTab = crumb[0].to;
       }
     },
+
     logout() {
       this.authStore.logout();
       this.$router.push("/login");
     },
+
     showChangelog() {
       this.$refs.changelogModal.showChangelog();
     },
+
     showUserGuide() {
-      axios.get('/media/user-guide')
-        .then(response => {
-          console.log(response.data.data);
-          
-          const url = response.data.data.url;
-          if (url) {
-            window.open(url, '_blank');
-          } else {
-            console.error('URL tidak ditemukan dalam respons:', response.data);
-          }
+      axios.get("/media/user-guide")
+        .then(res => {
+          const url = res.data.data?.url;
+          if (url) window.open(url, "_blank");
         })
-        .catch(error => {
-          console.error('Gagal mengambil user guide:', error);
-        });
-    }
+    },
   },
 };
 </script>
+<style scoped>
+.floating-menu-open {
+  position: fixed;
+  top: 65px;
+  left: 5px;
+  z-index: 9999;
+  background: #FF7A00;
+}
+.floating-menu-close {
+  position: fixed;
+  top: 0px;
+  right: -26px;
+  z-index: 9999;
+  color: white;
+  background: #FF7A00;
+}
+/* Untuk Chrome, Edge, Safari */
+:deep(.v-navigation-drawer__content::-webkit-scrollbar) {
+  width: 5 !important;
+  height: 5 !important;
+}
+
+/* Untuk Firefox */
+:deep(.v-navigation-drawer__content) {
+  scrollbar-width: none !important;
+}
+
+/* Untuk semua browser */
+:deep(.v-navigation-drawer__content) {
+  -ms-overflow-style: none !important;
+}
+:deep(.v-container) {
+  max-width: 95% !important;
+}
+</style>
