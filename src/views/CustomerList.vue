@@ -21,7 +21,7 @@
     </v-col>
   </v-row>
   <v-card
-    class="text-white bg-black rounded-lg py-0"
+    class="text-white bg-black rounded-t-lg py-0"
     :title="'Customer List'"
     variant="flat"
     image="../assets/bg-image-black.jpg"
@@ -63,13 +63,14 @@
         <span>Create</span>
       </v-btn>
     </template>
+  </v-card>
+  <v-card class="rounded-b-lg">
     <v-data-table
       :headers="headers"
       :items="items"
       :items-per-page-options="item_per_page"
       sort-asc-icon="mdi-chevron-up"
       sort-desc-icon="mdi-chevron-down"
-      class="elevation-1 primary mt-0"
     >
       <!-- Custom Cells -->
       <template v-slot:item.myflow_id="{ item }">
@@ -197,6 +198,7 @@
           v-model="menuEndDate"
           :close-on-content-click="false"
           location="center"
+          attach="body"
         >
           <template v-slot:activator="{ props }">
             <v-text-field

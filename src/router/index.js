@@ -1,6 +1,6 @@
 import { createRouter, createWebHistory } from 'vue-router';
 import { useAuthStore } from "@/stores/authStore";
-import MainLayout from '../layouts/MyFlowLayout.vue';
+import MainLayout from '../layouts/DataverseLayout.vue';
 import Dashboard from '../views/Dashboard.vue';
 import CustomerList from '../views/CustomerList.vue';
 import DeviceList from '../views/DeviceList.vue';

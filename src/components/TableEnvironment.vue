@@ -21,7 +21,7 @@
     </v-col>
   </v-row>
   <v-card
-    class="text-white bg-black rounded-lg py-0"
+    class="text-white bg-black rounded-t-lg py-0"
     :title="'Environment'"
     variant="flat"
     image="../assets/bg-image-black.jpg"
@@ -53,6 +53,8 @@
         <span>Filter</span>
       </v-btn>
     </template>
+  </v-card>
+  <v-card class="rounded-b-lg">
     <v-data-table
       :headers="headers"
       :items="items"

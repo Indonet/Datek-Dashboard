@@ -1,13 +1,13 @@
 <template>
   <v-layout class="rounded rounded-md border" height="100vh">
     <!-- APP BAR -->
-    <v-app-bar class="px-3 bg-black" rounded>
+    <v-app-bar class="px-3 bg-white" rounded>
 
       <v-btn
         v-if="!drawer"
         icon
         density="comfortable"
-        class="floating-menu-open elevation-2"
+        class="floating-menu-open elevation-2 text-white"
         @click="toggleDrawer"
       >
         <v-icon>
@@ -46,15 +46,15 @@
 
       <v-spacer />
 
-      <v-btn variant="text" size="small" @click="showChangelog" class="mr-2">
+      <!-- <v-btn variant="text" size="small" @click="showChangelog" class="mr-2">
         What's New
       </v-btn>
       <v-btn variant="text" size="small" @click="showUserGuide" class="mr-2">
         User Guide
-      </v-btn>
+      </v-btn> -->
       
       <!-- Notification -->
-      <ChatNotification></ChatNotification>
+      <!-- <ChatNotification></ChatNotification> -->
 
       <!-- Menu (user) -->
       <v-menu v-model="menu" :close-on-content-click="false" location="bottom">

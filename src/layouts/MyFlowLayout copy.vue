@@ -109,7 +109,7 @@ import ChatNotification from "../components/ChatNotification.vue"; // Sesuaikan 
 import ChangelogModal from "../components/ChangelogModal.vue"; // Sesuaikan path jika diperlukan
 
 export default {
-  name: "MyFlowLayout",
+  name: "DataverseLayout",
   data: () => ({
     authStore: useAuthStore(),
     activeTab: "",
