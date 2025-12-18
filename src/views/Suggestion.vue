@@ -29,7 +29,7 @@
         <p>{{ content }}</p>
         <p>Files Uploaded {{ selectedFiles }}</p>
       </div> -->
-      <v-divider class="my-3"></v-divider>
+      <v-divider class="my-2"></v-divider>
       <v-card-actions>
         <v-spacer></v-spacer>
         <v-btn color="medium-emphasis" @click="this.$router.back()"
@@ -37,7 +37,7 @@
         >
         <v-btn
           prepend-icon="mdi-send"
-          class="px-6"
+          class="px-6 indonet-orange"
           variant="flat"
           color="orange-darken-4"
           @click="showModal = true"

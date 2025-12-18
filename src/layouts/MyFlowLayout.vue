@@ -147,21 +147,39 @@
             <v-list-item v-bind="props" title="Inventory"></v-list-item>
           </template>
 
-          <v-list-item title="Customer" to="/inventory/customer"></v-list-item>
-          <v-list-item title="Devices" to="/inventory/devices"></v-list-item>
-          <v-list-item title="Datacenter" to="/inventory/datacenter"></v-list-item>
-          <v-list-item title="Rack" to="/inventory/rack"></v-list-item>
-          <v-list-item title="Services" to="/inventory/services"></v-list-item>
-          <v-list-item title="Vlan" to="/inventory/vlan"></v-list-item>
-          <v-list-item title="Cross Connect" to="/inventory/cross-connect"></v-list-item>
-          <v-list-item title="FO" to="/inventory/fo"></v-list-item>
+          <v-list-item title="Customer" to="/customer-list"></v-list-item>
+          <v-list-item title="Devices" to="/device-list"></v-list-item>
+          <v-list-item title="Datacenter" to="/datacenter-list"></v-list-item>
+          <v-list-item title="Rack" to="/rack-list"></v-list-item>
+          <v-list-item title="Virtual LAN" to="/vlan-list"></v-list-item>
+          <v-list-item title="Cross Connect" to="/cross-connect-list"></v-list-item>
+          <v-list-item title="Route Group" to="/route-group-list"></v-list-item>
+          <v-list-item title="Route" to="/route-list"></v-list-item>
+          <v-list-item title="FO" to="/fo-list"></v-list-item>
+        </v-list-group>
+
+        <!-- Services (with child) -->
+        <v-list-group value="services">
+          <template #activator="{ props }">
+            <v-list-item v-bind="props" title="Services"></v-list-item>
+          </template>
+
+          <v-list-item title="Local Loop" to="/local-loop-create"></v-list-item>
+          <v-list-item title="Internet" to="/internet-create"></v-list-item>
         </v-list-group>
 
         <!-- Documentation (no child) -->
         <v-list-item
           title="Documentation"
           link
-          to="/documentation"
+          to="/document-list"
+        ></v-list-item>
+
+        <!-- Knowledge (no child) -->
+        <v-list-item
+          title="Knowledge"
+          link
+          to="/knowledge-list"
         ></v-list-item>
 
         <!-- Config (with child) -->
@@ -170,15 +188,15 @@
             <v-list-item v-bind="props" title="Configuration"></v-list-item>
           </template>
 
-          <v-list-item title="Generate Config" to="/create"></v-list-item>
-          <v-list-item title="Backup Config (Gitea)" to="/config/backup"></v-list-item>
+          <v-list-item title="Backup Config (Gitea)" to="/backup-config-list"></v-list-item>
+          <v-list-item title="Generate Config" to="/general-config-list"></v-list-item>
         </v-list-group>
 
         <!-- KPI/Task (no child) -->
         <v-list-item
           title="Task"
           link
-          to="/suggestion"
+          to="/task-list"
         ></v-list-item>
 
       </v-list>

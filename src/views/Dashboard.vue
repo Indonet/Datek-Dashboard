@@ -49,9 +49,9 @@ export default {
       value: useDashboardStore().status_filter - 1,
       navItems: [
         { icon: "mdi-shape-plus", label: "Devices" },
-        { icon: "mdi-close-network", label: "Interfaces" },
-        { icon: "mdi-speedometer", label: "Threshold" },
-        { icon: "mdi-server", label: "Environment" },
+        { icon: "mdi-usb-port", label: "Interfaces" },
+        { icon: "mdi-gauge", label: "Threshold" },
+        { icon: "mdi-vector-circle", label: "Environment" },
         { icon: "mdi-shuffle", label: "BGP" },
         { icon: "mdi-account", label: "Customer" },
       ],
